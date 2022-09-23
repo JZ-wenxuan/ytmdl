@@ -3,7 +3,7 @@ from yt_dlp import YoutubeDL
 import logging
 import json
 
-def get(query, duration=None, duration_tolerance=1000, logger=logging.getLogger()):
+def get(query, duration=None, logger=logging.getLogger()):
     # sanitize query
     query = query.replace('-', '')
 
@@ -12,13 +12,16 @@ def get(query, duration=None, duration_tolerance=1000, logger=logging.getLogger(
     results = ytmusic.search(query.replace('-', ''))
     logger.debug(f'Got results from ytmusic: {json.dumps(results)}')
 
+    def in_range(v, range):
+        return v >= range[0] and v <= range[1]
+
     # select song
     def select_song(results):
         for r in results:
             if all([
                 r['category'] in ['Top result', 'Songs', 'Videos'],
                 r['resultType'] in ('song', 'video'),
-                duration is None or ('duration_seconds' in r and abs(r['duration_seconds'] * 1000  - duration) <= duration_tolerance),
+                duration is None or ('duration_seconds' in r and in_range(r['duration_seconds'], duration)),
             ]):
                 return r['videoId']
         raise Exception(f'No match for "{query}"')

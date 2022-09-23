@@ -9,7 +9,7 @@ pip install ytmurl
 ## Usage
 
 ```
-usage: ytmurl [-h] [--log-file LOG] [-d DURATION] query
+ytmurl [-h] [-l LOG] [-d FROM TO] query
 
 searches youtube music and prints audio url
 
@@ -18,7 +18,8 @@ positional arguments:
 
 optional arguments:
   -h, --help            show this help message and exit
-  --log-file LOG        log file to append to
-  -d DURATION, --duration DURATION
-                        duration of song in miliseconds
+  -l LOG, --log-file LOG
+                        log file to append to
+  -d FROM TO, --duration FROM TO
+                        duration range of song in seconds, inclusive
 ```

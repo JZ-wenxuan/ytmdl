@@ -1,4 +1,4 @@
-__version__ = "1.0.0"
+__version__ = "2.0.0"
 
 from .get import *
 import argparse
@@ -9,8 +9,8 @@ def main():
     # argparse
     parser = argparse.ArgumentParser(description = 'searches youtube music and prints audio url')
     parser.add_argument('query', help='query string containing title, artist, etc')
-    parser.add_argument('--log-file', dest='log', default='', help='log file to append to')
-    parser.add_argument('-d', '--duration', dest='duration', type=int, default=None, help='duration of song in miliseconds')
+    parser.add_argument('-l', '--log-file', dest='log', default='', help='log file to append to')
+    parser.add_argument('-d', '--duration', metavar=('FROM', 'TO'), nargs=2, type=int, default=None, help='duration range of song in seconds, inclusive')
     args = parser.parse_args()
 
     # logging setup
@@ -26,6 +26,6 @@ def main():
     try:
         print(get(args.query, duration=args.duration, logger=logging.getLogger()))
     except Exception:
-        logging.exception('YTMURL Exception')
+        logging.exception('YtmUrlException')
 
 
