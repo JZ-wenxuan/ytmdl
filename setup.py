@@ -5,9 +5,9 @@ with open('README.md', 'r', encoding='utf-8') as fh:
 
 setuptools.setup(
     name='ytmurl',
-    author='Tom Chen',
+    author='Jack Zhu',
     author_email='jzwenxuan@gmail.com',
-    description='Example PyPI (Python Package Index) Package',
+    description='From search keywords to MP3 URL with YouTube Music',
     keywords='example, pypi, package',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -38,7 +38,7 @@ setuptools.setup(
         'Operating System :: OS Independent',
     ],
     python_requires='>=3.7',
-    # install_requires=['Pillow'],
+    install_requires=['ytmusicapi', 'yt_dlp'],
     extras_require={
         'dev': ['check-manifest'],
         # 'test': ['coverage'],

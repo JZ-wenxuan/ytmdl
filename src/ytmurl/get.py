@@ -9,7 +9,7 @@ def get(query, duration=None, duration_tolerance=1000, logger=logging.getLogger(
 
     # ytm search
     ytmusic = YTMusic()
-    results = ytmusic.search(query.replace('-', '')) # example: '街角の风景 Falcom Sound Team J.D.K. 英雄伝説 零の軌跡 オリジナルサウンドトラック'
+    results = ytmusic.search(query.replace('-', ''))
     logger.debug(f'Got results from ytmusic: {json.dumps(results)}')
 
     # select song
@@ -21,8 +21,7 @@ def get(query, duration=None, duration_tolerance=1000, logger=logging.getLogger(
                 duration is None or ('duration_seconds' in r and abs(r['duration_seconds'] * 1000  - duration) <= duration_tolerance),
             ]):
                 return r['videoId']
-        logger.exception(f'No match for "{query}"')
-        return None
+        raise Exception(f'No match for "{query}"')
 
     songId = select_song(results)
     logger.info(f'Retrieved Song Id: {songId}')
