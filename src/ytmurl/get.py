@@ -3,7 +3,7 @@ from yt_dlp import YoutubeDL
 import logging
 import json
 
-def get(query, duration=None, logger=logging.getLogger(), format='m4a'):
+def get(query, duration=None, logger=logging.getLogger()):
     # sanitize query
     query = query.replace('-', '')
 
@@ -25,15 +25,13 @@ def get(query, duration=None, logger=logging.getLogger(), format='m4a'):
             ]):
                 return r['videoId']
         raise Exception(f'No match for "{query}"')
-    
-    print(results)
 
     songId = select_song(results)
     logger.info(f'Retrieved Song Id: {songId}')
+    print(f'Retrieved Song Id: {songId}')
 
     # get url with yt-dlp
     ydl_opts = {
-        'format' : format,
         'logger' : logger,
     }
     with YoutubeDL(ydl_opts) as ydl:
@@ -42,7 +40,13 @@ def get(query, duration=None, logger=logging.getLogger(), format='m4a'):
 
     logger.debug(f'Got json: {json.dumps(info)}')
 
-    url = info['url']
+    # filter out webm because ios does not like it
+    formats = [f for f in info['formats'] if f['audio_ext'] != 'webm' and f['resolution'] == "audio only"]
 
-    logger.info(f'Got URL: {url}')
+    format = max(formats, key=lambda format: format['quality'])
+
+    url = format['url']
+
+    logger.info(f'Got URL of {format["format"]}: {url}')
+    print(f'Got URL of {format["format"]}: {url}')
     return url
