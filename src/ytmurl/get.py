@@ -3,7 +3,7 @@ from yt_dlp import YoutubeDL
 import logging
 import json
 
-def get(query, duration=None, logger=logging.getLogger()):
+def get(query, duration=None, logger=logging.getLogger(), format='m4a'):
     # sanitize query
     query = query.replace('-', '')
 
@@ -25,13 +25,15 @@ def get(query, duration=None, logger=logging.getLogger()):
             ]):
                 return r['videoId']
         raise Exception(f'No match for "{query}"')
+    
+    print(results)
 
     songId = select_song(results)
     logger.info(f'Retrieved Song Id: {songId}')
 
     # get url with yt-dlp
     ydl_opts = {
-        'format' : 'bestaudio',
+        'format' : format,
         'logger' : logger,
     }
     with YoutubeDL(ydl_opts) as ydl:
